@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giải Toán Tối Ưu - Toán 10 KNTT</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      startup: { typeset: false }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    .spinner { border: 3px solid rgba(255, 255, 255, 0.3); border-top: 3px solid #fff; border-radius: 50%; width: 18px; height: 18px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .hidden { display: none !important; }
+    #solutionContent { font-size: 1.05rem; line-height: 1.8; color: #1f2937; }
+    #solutionContent h1, #solutionContent h2, #solutionContent h3 { font-weight: 700; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #1e40af; }
+    #solutionContent p { margin-bottom: 0.75rem; }
+    #solutionContent ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800 font-sans p-4 md:p-6">
+
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <header class="mb-6 text-center bg-blue-700 text-white py-5 rounded-xl shadow-md">
+      <div class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-2 uppercase tracking-wider">
+        AI Multimodal Vision - Dán Ảnh Là Giải Chính Xác
+      </div>
+      <h1 class="text-2xl md:text-3xl font-extrabold tracking-wide uppercase">Giải Tự Động Bài Toán Tối Ưu Lớp 10</h1>
+      <p class="text-blue-200 mt-1 text-sm">Chuẩn phương pháp & quy cách trình bày SGK Toán 10 - Kết nối tri thức với cuộc sống</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      
+      <!-- Cột Trái: Nạp đề & Đồ thị (5/12) -->
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        
+        <div class="bg-white p-5 rounded-xl shadow border border-slate-200">
+          <div class="flex items-center justify-between mb-3 border-b pb-2">
+            <h2 class="text-lg font-bold text-slate-700 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              Nạp Ảnh Đề Bài
+            </h2>
+            <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Bấm Ctrl + V trên trang này</span>
+          </div>
+
+          <!-- Khung ảnh dán vào -->
+          <div id="imagePreviewContainer" class="hidden mb-3 border-2 border-dashed border-indigo-400 rounded-lg p-3 bg-indigo-50/50 text-center">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-xs font-bold text-indigo-800">📸 Ảnh đề bài vừa dán:</span>
+              <button onclick="clearImage()" class="text-xs text-red-500 hover:underline">Xóa ảnh</button>
+            </div>
+            <img id="imagePreview" class="max-h-48 w-auto mx-auto rounded border shadow-sm mb-2" src="" alt="Ảnh đề bài">
+            <p id="compressStatus" class="text-[11px] text-emerald-700 font-semibold"></p>
+          </div>
+
+          <!-- Trạng thái hướng dẫn nếu chưa dán -->
+          <div id="pasteGuide" class="p-6 border-2 border-dashed border-slate-300 rounded-lg text-center text-slate-400 mb-3 bg-slate-50">
+            <svg class="w-10 h-10 mx-auto mb-2 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <p class="text-sm font-semibold text-slate-600">Chụp màn hình đề bài bất kỳ</p>
+            <p class="text-xs mt-1 text-slate-400">rồi bấm tổ hợp phím <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded shadow-sm text-slate-700 font-bold">Ctrl + V</kbd> vào đây</p>
+          </div>
+
+          <!-- Nút hành động -->
+          <button id="btnSolve" onclick="triggerSolve()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition transform active:scale-95 flex items-center justify-center">
+            <span id="spinner" class="spinner hidden"></span>
+            <span id="btnText">TIẾN HÀNH GIẢI BÀI TOÁN NÀY</span>
+          </button>
+        </div>
+
+        <!-- Đồ thị miền nghiệm Canvas -->
+        <div class="bg-white p-5 rounded-xl shadow border border-slate-200">
+          <div class="flex justify-between items-center mb-3 border-b pb-2">
+            <h2 class="text-lg font-bold text-slate-700">Đồ Thị Miền Nghiệm</h2>
+            <button onclick="exportGraph()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold py-1 px-3 rounded border border-indigo-200 text-xs shadow-sm transition">
+              [ XUẤT ĐỒ THỊ (.PNG) ]
+            </button>
+          </div>
+          
+          <div class="w-full overflow-hidden flex justify-center bg-white border border-slate-200 rounded-lg relative" style="min-height: 360px;">
+            <canvas id="mathCanvas" width="500" height="420" class="w-full h-auto block"></canvas>
+            <div id="canvasPlaceholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 p-6 text-center">
+              <p class="text-xs">Đồ thị miền nghiệm chuẩn SGK KNTT sẽ vẽ tại đây.</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2 text-center italic">* Nửa mặt phẳng gạch sọc bị loại bỏ. Đa giác sáng màu là miền nghiệm khả thi.</p>
+        </div>
+      </div>
+
+      <!-- Cột Phải: Lời giải 6 bước & Markdown (7/12) -->
+      <div class="lg:col-span-7 bg-white p-6 md:p-8 rounded-xl shadow border border-slate-200 flex flex-col min-h-[650px]">
+        <div class="flex justify-between items-center mb-5 border-b pb-3">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800">Lời Giải Từng Bước (Chuẩn SGK KNTT)</h2>
+            <p class="text-xs text-slate-500 mt-1">Chuẩn mực 6 bước: Gọi ẩn - Lập hệ - Vẽ miền - Tìm đỉnh - Thay F - Kết luận</p>
+          </div>
+          <button onclick="exportMarkdown()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1.5 px-4 rounded text-sm shadow transition flex items-center">
+            [ XUẤT LỜI GIẢI (.MD) ]
+          </button>
+        </div>
+        
+        <div id="solutionContent" class="flex-grow overflow-y-auto pr-1">
+          <div class="text-slate-400 flex flex-col items-center justify-center h-full italic text-sm">
+            Chụp ảnh màn hình đề bài bất kỳ và bấm Ctrl + V để hệ thống tự động giải.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let currentPayload = { mimeType: null, data: null, text: '' };
+    window.currentMarkdownResult = '';
+
+    // =========================================================================
+    // 1. THUẬT TOÁN NÉN ẢNH CLIENT-SIDE (CHỐNG LỖI 429 TOKEN QUOTA)
+    // =========================================================================
+    function compressImage(blob, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxDim = 1000; // Chiều dài tối đa 1000px đủ rõ nét để đọc chữ
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Nén thành JPEG chất lượng 75%
+          const base64 = canvas.toDataURL('image/jpeg', 0.75).split(',')[1];
+          callback(base64, 'image/jpeg');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(blob);
+    }
+
+    // =========================================================================
+    // 2. BẮT SỰ KIỆN DÁN ẢNH (CTRL + V) VÀ TỰ ĐỘNG GIẢI
+    // =========================================================================
+    window.addEventListener('paste', (e) => {
+      let items = e.clipboardData.items;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          let blob = items[i].getAsFile();
+          
+          compressImage(blob, function(base64Data, mime) {
+            currentPayload.mimeType = mime;
+            currentPayload.data = base64Data;
+            
+            // Hiển thị ảnh xem trước
+            document.getElementById('imagePreview').src = "data:" + mime + ";base64," + base64Data;
+            document.getElementById('imagePreviewContainer').classList.remove('hidden');
+            document.getElementById('pasteGuide').classList.add('hidden');
+            document.getElementById('compressStatus').innerText = "✓ Đã nhận và tối ưu dung lượng ảnh thành công.";
+
+            // Tự động kích hoạt giải toán ngay lập tức
+            triggerSolve();
+          });
+
+          e.preventDefault();
+          break;
+        }
+      }
+    });
+
+    function clearImage() {
+      currentPayload.data = null;
+      currentPayload.mimeType = null;
+      document.getElementById('imagePreview').src = '';
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+      document.getElementById('pasteGuide').classList.remove('hidden');
+    }
+
+    // =========================================================================
+    // 3. GỌI API BACKEND
+    // =========================================================================
+    function triggerSolve() {
+      if (!currentPayload.data) {
+        alert("Bạn chưa dán ảnh đề bài nào. Hãy chụp màn hình đề bài rồi bấm Ctrl + V vào trang web!");
+        return;
+      }
+
+      document.getElementById('btnText').innerText = "ĐANG PHÂN TÍCH VÀ GIẢI TOÁN...";
+      document.getElementById('spinner').classList.remove('hidden');
+      document.getElementById('btnSolve').disabled = true;
+
+      google.script.run
+        .withSuccessHandler(onSuccess)
+        .withFailureHandler(onFailure)
+        .solveOptimizationProblem(currentPayload);
+    }
+
+    function onSuccess(res) {
+      resetBtn();
+      if (!res || !res.success) {
+        alert("Có lỗi xảy ra: " + (res ? res.error : "Không nhận được phản hồi."));
+        return;
+      }
+
+      try {
+        const data = JSON.parse(res.data);
+
+        // Hiển thị lời giải 6 bước
+        window.currentMarkdownResult = data.markdown_solution;
+        const solDiv = document.getElementById('solutionContent');
+        solDiv.innerHTML = marked.parse(data.markdown_solution);
+        if (window.MathJax) {
+          MathJax.typesetPromise([solDiv]).catch(err => console.error(err));
+        }
+
+        // Vẽ đồ thị Canvas
+        if (data.graph_data) {
+          document.getElementById('canvasPlaceholder').classList.add('hidden');
+          drawCanvasGraph(data.graph_data);
+        }
+      } catch (e) {
+        alert("Lỗi đọc dữ liệu: " + e.message);
+      }
+    }
+
+    function onFailure(err) {
+      resetBtn();
+      alert("Lỗi hệ thống: " + err.message);
+    }
+
+    function resetBtn() {
+      document.getElementById('btnText').innerText = "TIẾN HÀNH GIẢI BÀI TOÁN NÀY";
+      document.getElementById('spinner').classList.add('hidden');
+      document.getElementById('btnSolve').disabled = false;
+    }
+
+    // =========================================================================
+    // 4. THUẬT TOÁN VẼ ĐỒ THỊ CHUẨN SGK TOÁN 10 KNTT
+    // =========================================================================
+    function drawCanvasGraph(data) {
+      const canvas = document.getElementById('mathCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      let { x_min, x_max, y_min, y_max } = data.viewport;
+      const padding = 50;
+      const scaleX = (w - 2 * padding) / (x_max - x_min);
+      const scaleY = (h - 2 * padding) / (y_max - y_min);
+
+      const toX = val => padding + (val - x_min) * scaleX;
+      const toY = val => h - padding - (val - y_min) * scaleY;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Gạch sọc miền bị loại bỏ
+      const patternCv = document.createElement('canvas');
+      patternCv.width = 10; patternCv.height = 10;
+      const pCtx = patternCv.getContext('2d');
+      pCtx.strokeStyle = '#cbd5e1'; 
+      pCtx.lineWidth = 1;
+      pCtx.beginPath(); pCtx.moveTo(0, 10); pCtx.lineTo(10, 0); pCtx.stroke();
+      const hatchPattern = ctx.createPattern(patternCv, 'repeat');
+
+      ctx.fillStyle = hatchPattern;
+      ctx.fillRect(0, 0, w, h);
+
+      // Miền nghiệm đa giác sáng màu
+      if (data.feasible_polygon && data.feasible_polygon.length > 2) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        data.feasible_polygon.forEach((p, i) => {
+          if (i === 0) ctx.moveTo(toX(p.x), toY(p.y));
+          else ctx.lineTo(toX(p.x), toY(p.y));
+        });
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = 'rgba(224, 242, 254, 0.85)';
+        ctx.fill();
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+
+      // Hệ trục Oxy
+      ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1.5;
+      const originX = toX(0); const originY = toY(0);
+      
+      ctx.beginPath(); ctx.moveTo(padding / 2, originY); ctx.lineTo(w - padding / 2, originY); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(w - padding / 2, originY); ctx.lineTo(w - padding / 2 - 8, originY - 4); ctx.lineTo(w - padding / 2 - 8, originY + 4); ctx.fill();
+      
+      ctx.beginPath(); ctx.moveTo(originX, h - padding / 2); ctx.lineTo(originX, padding / 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(originX, padding / 2); ctx.lineTo(originX - 4, padding / 2 + 8); ctx.lineTo(originX + 4, padding / 2 + 8); ctx.fill();
+      
+      ctx.fillStyle = '#000'; ctx.font = 'italic 14px "Times New Roman", serif';
+      ctx.fillText('x', w - padding / 2 + 5, originY + 15);
+      ctx.fillText('y', originX - 18, padding / 2 - 5);
+      ctx.fillText('O', originX - 15, originY + 15);
+
+      // Đường thẳng biên
+      const colors = ['#dc2626', '#16a34a', '#d97706', '#9333ea', '#db2777'];
+      data.lines.forEach((line, idx) => {
+        if (line.a === 0 && line.b === 0) return;
+        ctx.beginPath();
+        ctx.strokeStyle = colors[idx % colors.length];
+        ctx.lineWidth = 1.8;
+
+        let p1, p2;
+        if (Math.abs(line.b) > 0.0001) {
+          p1 = { x: x_min, y: (line.c - line.a * x_min) / line.b };
+          p2 = { x: x_max, y: (line.c - line.a * x_max) / line.b };
+        } else {
+          p1 = { x: line.c / line.a, y: y_min };
+          p2 = { x: line.c / line.a, y: y_max };
+        }
+
+        ctx.moveTo(toX(p1.x), toY(p1.y));
+        ctx.lineTo(toX(p2.x), toY(p2.y));
+        ctx.stroke();
+
+        ctx.fillStyle = ctx.strokeStyle;
+        ctx.font = '11px Arial';
+        ctx.fillText(line.label.split(' ')[0], toX(p2.x) - 40, toY(p2.y) - 8);
+      });
+
+      // Đỉnh đa giác và đánh dấu điểm tối ưu
+      data.feasible_polygon.forEach(p => {
+        const px = toX(p.x); const py = toY(p.y);
+        ctx.beginPath();
+        ctx.arc(px, py, p.is_optimal ? 6 : 4, 0, 2 * Math.PI);
+        ctx.fillStyle = p.is_optimal ? '#ef4444' : '#1e3a8a';
+        ctx.fill(); 
+        ctx.strokeStyle = '#fff'; 
+        ctx.lineWidth = 1.5; 
+        ctx.stroke();
+        
+        ctx.fillStyle = p.is_optimal ? '#b91c1c' : '#0f172a';
+        ctx.font = 'bold 12px Arial';
+        ctx.fillText(`${p.label}(${p.x}; ${p.y})`, px + 8, py - 8);
+      });
+    }
+
+    // =========================================================================
+    // 5. XUẤT TỆP
+    // =========================================================================
+    function exportGraph() {
+      const canvas = document.getElementById('mathCanvas');
+      const link = document.createElement('a');
+      link.download = 'do-thi-mien-nghiem-kntt.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function exportMarkdown() {
+      if (!window.currentMarkdownResult) return alert("Chưa có lời giải để xuất!");
+      const blob = new Blob(["\uFEFF" + window.currentMarkdownResult], { type: 'text/markdown;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'loi-giai-toi-uu-kntt.md';
+      link.click();
+    }
+  </script>
+</body>
+</html>
