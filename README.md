@@ -1,0 +1,2 @@
+1/ HỆ BẤT PHƯƠNG TRÌNH BẬC NHẤT 2 ẨN
+2/ GIẢI QUYẾT BÀI TOÁN TỐI ƯU
